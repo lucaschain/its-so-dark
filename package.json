@@ -1,0 +1,25 @@
+{
+  "name": "youre_so_dark",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack",
+    "prepublish": "yarn run build"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "@babel/polyfill": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/preset-flow": "^7.0.0",
+    "babel-loader": "^8.0.5",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.0"
+  },
+  "dependencies": {
+    "immutable": "^4.0.0-rc.12",
+    "ramda": "^0.26.1",
+    "tonal": "^2.2.2"
+  }
+}
