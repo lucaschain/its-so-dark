@@ -20,6 +20,6 @@
   "dependencies": {
     "immutable": "^4.0.0-rc.12",
     "ramda": "^0.26.1",
-    "tonal": "^2.2.2"
+    "tone": "^13.4.9"
   }
 }
