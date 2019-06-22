@@ -1,6 +1,7 @@
 // @flow
 import { Set } from 'immutable'
 import { type Grid } from './maze/grid'
+import { type Cell, walkableNeighbors } from './maze/cell'
 import { type Vertex } from './common/vertex'
 import { type Synth } from './synth'
 import { vertexNote } from './synth/grid'
@@ -12,14 +13,20 @@ export type Game = {
   pathFinding: any,
   current: Vertex,
   heading: number,
-  neighbors: Set<Vertex>,
+  neighbors: Cell[],
   synthGrid: any
 }
 
-export const tick = (synth: Synth, camera: Camera, game: Game): Game => {
-  const { synthGrid, current } = game
+export const calculateNeighbors = (game: Game): Game => {
+  const { grid, current } = game
+  return {
+    ...game,
+    neighbors: walkableNeighbors(current, grid)
+  }
+}
 
-  camera(game)
+export const tick = (synth: Synth, game: Game): Game => {
+  const { synthGrid, current } = game
 
   if (current) {
     const note = vertexNote(synthGrid, current)

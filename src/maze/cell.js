@@ -70,7 +70,11 @@ export const cellEquals = (cellA: Cell, cellB: Cell): boolean => (
   cellA.x === cellB.x && cellA.y === cellB.y
 )
 
-export const walkableNeighbors = (cell: Cell, grid: Grid): Cell[] => {
+export const walkableNeighbors = (vertex: Vertex, grid: Grid): Cell[] => {
+  const cell = cellAt(grid, vertex.x, vertex.y)
+  if (!cell) {
+    return []
+  }
   const canWalkTo = (nextCell: Cell) => {
     const [isTop, isRight, isBottom, isLeft ] = connectionPoints(cell, nextCell)
 

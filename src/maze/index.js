@@ -1,6 +1,7 @@
 // @flow
 import { type Cell, neighbors, breakWalls } from './cell'
 import { type Grid, cellAt } from './grid'
+import { type Vertex } from '../common/vertex'
 
 export const allVisited = (grid: Grid): bool => {
   const visitedCell = (cell) => cell.visited
