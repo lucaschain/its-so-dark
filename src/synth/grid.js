@@ -2,6 +2,7 @@
 
 import { partial, unfold } from 'ramda'
 import { Set, OrderedSet } from 'immutable'
+import { harryPotter } from '../songs/index'
 import { Note } from './note'
 import { type Key } from './key'
 import { type Vertex } from '../common/vertex'
@@ -18,36 +19,12 @@ const createKeyForVertex = (
     vertex.x === subject.x && vertex.y === subject.y
   ))
 
-  const noteToNum = (note: string): number => {
-    const octavesUp = (note.match(/\+/g) || []).length
-    const octavesDown = (note.match(/\-/g) || []).length
-
-    const pureNote = note.replace(/(\+|\-)/g, '')
-    return {
-      "Cb": -1,
-      "C": 0,
-      "C#": 1, "Db": 1,
-      "D": 2,
-      "D#": 3, "Eb": 3,
-      "E": 4,
-      "F": 5,
-      "F#": 6, "Gb": 6,
-      "G": 7,
-      "G#": 8, "Ab": 8,
-      "A": 9,
-      "A#": 10, "Bb": 10,
-      "B": 11
-    }[pureNote] + (octavesUp * 12) - (octavesDown * 12) + 12
-  }
-
-  const scale = "-B E G F# E B A F# E G F# Eb E -B -B E G F# E B +D +Db +C Ab +C B Bb Eb G E G B G B G +C B Bb F# G B Bb Eb E B G B G B G +D +Db +C Ab +C B Bb Eb G E"
-    .split(' ')
-    .map(noteToNum)
+  const song = harryPotter
 
   if (pos > -1) {
     const positionInPath = correctPath.size - 1 - pos
-    const positionInScale = positionInPath % scale.length
-    const semiTones = scale[positionInScale]
+    const positionInScale = positionInPath % song.length
+    const semiTones = song[positionInScale]
 
     return {
       ...vertex,
