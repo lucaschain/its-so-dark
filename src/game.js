@@ -11,6 +11,7 @@ export type Game = {
   grid: Grid,
   pathFinding: any,
   current: Vertex,
+  heading: number,
   neighbors: Set<Vertex>,
   synthGrid: any
 }
@@ -34,18 +35,36 @@ const isAllowedToMove = (newPosition, neighbors): boolean => (
   ))
 )
 
+export const turn = (direction: string) => (game: Game): Game => {
+  let { heading } = game
+
+  if (direction === 'right') {
+    heading += 90
+  } else if (direction === 'left') {
+    heading -= 90
+  }
+
+  return {
+    ...game,
+    heading: heading
+  }
+}
+
 export const move = (direction: string) => (game: Game): Game => {
-  const { grid, current, neighbors } = game
-  const movementVector = {
-    'up': { x: 0, y: -1 },
-    'down': { x: 0, y: 1 },
-    'left': { x: -1, y: 0 },
-    'right': { x: 1, y: 0 },
-  }[direction] || { x: 0, y: 0 }
+  const { grid, current, heading, neighbors } = game
+
+  const sin = (angle) => Math.round(Math.sin(angle * Math.PI / 180))
+  const cos = (angle) => Math.round(Math.cos(angle * Math.PI / 180))
+  const distance = direction === 'front' ? 1 : -1
+
+  const movement = {
+    x: cos(heading) * distance,
+    y: sin(heading) * distance
+  }
 
   const newPosition = {
-    x: movementVector.x + current.x,
-    y: movementVector.y + current.y
+    x: movement.x + current.x,
+    y: movement.y + current.y
   }
 
   const moveAllowed = isAllowedToMove(

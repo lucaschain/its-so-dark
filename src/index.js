@@ -3,7 +3,7 @@ import { OrderedSet, Set, Map } from 'immutable'
 import { partial, pipe } from 'ramda'
 import { type Grid, createGrid, cellAt } from './maze/grid'
 import { type Cell, walkableNeighbors as cellNeighbors } from './maze/cell'
-import { type Game, tick, move } from './game'
+import { type Game, tick, move, turn } from './game'
 import { createCamera } from './camera'
 import { createCameraSettings } from './camera/camera_settings'
 import { fillMaze } from './maze'
@@ -45,15 +45,13 @@ const calculateNeighbors = (game: Game): Game => {
 
 export const startGame = (game: Game, synth: Synth, camera: (Game) => void) => {
   const tickGame = partial(tick, [ synth, camera ])
-  const neighborFinder = partial(neighbors, [ game.grid ])
-
   let gameState = game
 
   const keyMap = {
-    ArrowUp: pipe(move('up'), tickGame),
-    ArrowDown: pipe(move('down'), tickGame),
-    ArrowLeft: pipe(move('left'), tickGame),
-    ArrowRight: pipe(move('right'), tickGame)
+    ArrowUp: pipe(move('front')),
+    ArrowDown: pipe(move('back')),
+    ArrowLeft: pipe(turn('left')),
+    ArrowRight: pipe(turn('right'))
   }
 
   onKeyDown((keyPressed) => {

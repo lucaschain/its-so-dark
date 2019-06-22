@@ -32,6 +32,9 @@ const draw = (settings: CameraSettings, game: Game): void => {
       radius: 20,
       color: '#00FF00'
     })
+    */
+
+    drawRaycasting(settings, game)
   }
 }
 
