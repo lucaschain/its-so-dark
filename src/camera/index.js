@@ -39,9 +39,10 @@ const draw = (settings: CameraSettings, game: Game): void => {
     })
 
   }
+
+  return game
 }
 
-export const createCamera = (settings: CameraSettings): Function => (
+export const createCamera = (settings: CameraSettings): Camera => (
 	draw.bind(null, settings)
 )
-

@@ -1,7 +1,12 @@
 // @flow
 import { withContext } from './with_context'
 
-export const createCameraSettings = (canvasId: string, width: number, height: number, tileSize: number): CameraSettings => {
+export const createCameraSettings = (
+  canvasId: string,
+  width: number,
+  height: number,
+  tileSize: number
+): CameraSettings => {
   const canvas = document.getElementById(canvasId)
 
   if (canvas instanceof HTMLCanvasElement) {
