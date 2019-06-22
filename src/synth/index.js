@@ -5,31 +5,14 @@ import { Map } from 'immutable'
 import Tone from 'tone'
 
 export type Synth = {
-  beep: Function,
-  chord: Function,
-}
-
-const createOscillator = (
-  audioContext: AudioContext,
-  frequency: number
-): OscillatorNode => {
-  const oscillator = audioContext.createOscillator()
-  oscillator.type = 'sine'
-  oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime)
-  oscillator.connect(audioContext.destination)
-
-  return oscillator
+  beep: (number) => void
 }
 
 const beep = (
   audioContext: AudioContext,
   synth: Tone.Synth,
-  frequency: number,
-  duration: number = 200
+  frequency: number
 ): void => {
-  //const oscillator = createOscillator(audioContext, frequency)
-  //oscillator.start()
-  //setTimeout(() => oscillator.stop(), duration)
   synth.triggerAttackRelease(frequency, '16n')
 }
 
@@ -56,11 +39,6 @@ export const createSynth = () => {
   const synth = buildToneSynth()
 
   return {
-    beep: partial(beep, [audioContext, synth]),
-    chord: (frequencies: number[], duration: number = 200) => {
-      frequencies.forEach(frequency => {
-        beep(audioContext, frequency, duration)
-      })
-    }
+    beep: partial(beep, [audioContext, synth])
   }
 }
