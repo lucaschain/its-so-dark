@@ -25,6 +25,12 @@ const createRays = (
   ]
 }
 
+const castRays = (rays: Ray[], walls: Wall[]): Ray[] => {
+  return rays
+    .map((ray) => cast(ray, walls))
+    .filter(ray => !!ray.target)
+}
+
 export const flashLight = (
   source: Vertex,
   angle: number,
@@ -40,5 +46,5 @@ export const flashLight = (
     amountOfRays
   )
 
-  return rays.map((ray) => cast(ray, walls))
+  return castRays(rays, walls)
 }

@@ -85,13 +85,14 @@ const draw3dRendered = (settings: CameraSettings, origin: Vertex, rays: Ray[], a
     if (!ray.target) {
       return
     }
-    const lastRayTarget = (lastState[index].target) ? lastState[index].target : ray.target
+    const lastRay = lastState[index] || ray
+    const lastRayTarget = (lastRay.target) ? lastRay.target : ray.target
     const rayLength = distance(origin, ray.target)
 
     const maxDistance = 20
     const minDistance = 0
     const lastRayLength = distance(origin, lastRayTarget)
-    const fixedDistance = rayLength + ((lastRayLength - rayLength) / 1.5)
+    const fixedDistance = rayLength + ((lastRayLength - rayLength) / 5)
 
     const alpha = constrain(fixedDistance, minDistance, maxDistance)
 
@@ -107,9 +108,9 @@ const draw3dRendered = (settings: CameraSettings, origin: Vertex, rays: Ray[], a
       height,
       color: `rgba(155, 30, 30, ${alpha})`
     })
-  })
 
-  lastState = rays
+    lastState[index] = ray
+  })
 }
 
 export const drawRaycasting = (

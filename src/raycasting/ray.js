@@ -27,28 +27,28 @@ export const createRay = (position: Vertex, angle: number): Ray => {
  * https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#In_two_dimensions
  */
 
-export const cast = (ray: Ray, walls: Wall[]): Vertex | boolean => {
-  const points = walls.map(partial(castToWall, [ray]))
+export const cast = (ray: Ray, walls: Wall[]): Ray => {
+  const rays = walls.map(partial(castToWall, [ray]))
 
-  return nearestPoint(ray.position, points)
+  return nearestRay(rays)
 }
 
-const nearestPoint = (reference: Vertex, points: Ray[]): Vertex => {
-  let nearestPoint = reference
+const nearestRay = (rays: Ray[]): Ray => {
+  let nearestRay = rays[0]
   let nearestDistance = Infinity
 
-  points.forEach((point) => {
-    if (point.target) {
-      const pointDistance = distance(reference, point.target)
+  rays.forEach((ray) => {
+    if (ray.target) {
+      const pointDistance = distance(ray.position, ray.target)
 
       if (pointDistance < nearestDistance) {
         nearestDistance = pointDistance
-        nearestPoint = point
+        nearestRay = ray
       }
     }
   })
 
-  return nearestPoint
+  return nearestRay
 }
 
 const wallPoints = (wall: Wall) => ({
