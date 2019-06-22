@@ -5,8 +5,8 @@ export const createCameraSettings = (canvasId: string, width: number, height: nu
   const canvas = document.getElementById(canvasId)
 
   if (canvas instanceof HTMLCanvasElement) {
-    canvas.width = width * tileSize
-    canvas.height = height * tileSize
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
 
     return {
       context: canvas.getContext('2d'),

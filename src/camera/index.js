@@ -3,12 +3,13 @@ import { type Game } from '../game'
 import { withContext } from './with_context'
 import { drawCells } from './cell'
 import { drawPathFinding } from './path_finding'
+import { drawRaycasting } from './raycasting'
 import { type CameraSettings, createCameraSettings } from './camera_settings'
 import { drawCircle } from './circle'
 
 const clearScreen = (settings: CameraSettings): void => {
   withContext(settings, (context: CanvasRenderingContext2D) => {
-    context.clearRect(0, 0, settings.width * settings.tileSize, settings.height * settings.tileSize)
+    context.clearRect(0, 0, settings.canvas.width, settings.canvas.height)
   })
 }
 
@@ -29,8 +30,8 @@ const draw = (settings: CameraSettings, game: Game): void => {
     drawCircle(settings, {
       x: current.x * tileSize + (tileSize / 2),
       y: current.y * tileSize + (tileSize / 2),
-      radius: 20,
-      color: '#00FF00'
+      radius: tileSize / 3,
+      color: '#00FF0077'
     })
     */
 

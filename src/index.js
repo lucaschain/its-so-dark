@@ -16,7 +16,7 @@ import { createSynthGrid } from './synth/grid'
 import { onKeyDown } from './input'
 import { type Synth } from './synth'
 
-const tileSize = 100
+const tileSize = 30
 const size = 10 // keep this a square
 const width = size
 const height = size
@@ -64,16 +64,17 @@ export const startGame = (game: Game, synth: Synth, camera: (Game) => void) => {
     )(gameState)
   })
 
+  setInterval(() => {
+    gameState = tickGame(gameState)
+  }, 20)
+
   tickGame(gameState)
 }
 
 async function setup() {
   const initialGrid = createGrid(width, height)
-  const camera = createCamera(cameraSettings)
 
   const grid = Array.from(fillMaze(initialGrid)).pop()
-
-  camera({ grid })
 
   const neighborFinder = partial(neighbors, [ grid ])
   const pathSteps = findPath(nodeSetFromGrid(grid), neighborFinder)
@@ -91,10 +92,12 @@ async function setup() {
       grid,
       pathFinding,
       synthGrid,
+      heading: 0,
       current: { x: 0, y: 0 },
       neighbors: Set()
     }
 
+    const camera = createCamera(cameraSettings)
     startGame(game, createSynth(), camera)
   }
 }

@@ -30,7 +30,7 @@ const drawCellVertex = (
       toTile(cell.y + nextVertex.y)
     )
 
-    context.strokeStyle = 'rgb(170, 0, 0)'
+    context.strokeStyle = 'rgba(170, 0, 0, 0.5)'
     context.lineWidth = 10;
     if (cell.walls[index]) {
       context.stroke()
@@ -59,7 +59,7 @@ const drawCell = (settings: CameraSettings, cell: Cell): void => {
     y: cell.y * tileSize,
     width: tileSize,
     height: tileSize,
-    color: cell.visited ? 'rgb(10, 10, 15)' : 'rgb(0, 0, 10)'
+    color: cell.visited ? 'rgba(10, 10, 15, 0.5)' : 'rgba(0, 0, 10, 0.5)'
   })
 
   drawCellVertices(settings, cell)
