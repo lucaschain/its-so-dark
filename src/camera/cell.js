@@ -59,7 +59,7 @@ const drawCell = (settings: CameraSettings, cell: Cell): void => {
     y: cell.y * tileSize,
     width: tileSize,
     height: tileSize,
-    color: cell.visited ? 'rgba(10, 10, 15, 0.5)' : 'rgba(0, 0, 10, 0.5)'
+    color: cell.visited ? 'rgba(10, 10, 15, 0.8)' : 'rgba(0, 0, 10, 0.8)'
   })
 
   drawCellVertices(settings, cell)

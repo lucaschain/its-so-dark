@@ -23,7 +23,7 @@ export const tick = (synth: Synth, camera: Camera, game: Game): Game => {
 
   if (current) {
     const note = vertexNote(synthGrid, current)
-    synth.beep(note.frequency)
+    //synth.beep(note.frequency)
   }
 
   return game

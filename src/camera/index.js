@@ -16,13 +16,17 @@ const clearScreen = (settings: CameraSettings): void => {
 const draw = (settings: CameraSettings, game: Game): void => {
   const { grid: { cells }, pathFinding, synthGrid, current } = game
 
-  clearScreen(settings);
+  clearScreen(settings)
+
+  drawRaycasting(settings, game)
 
   drawCells(settings, cells)
 
+  /*
   if (pathFinding) {
     drawPathFinding(settings, game, pathFinding)
   }
+  */
 
   if (current) {
     const tileSize = settings.tileSize
@@ -33,9 +37,7 @@ const draw = (settings: CameraSettings, game: Game): void => {
       radius: tileSize / 3,
       color: '#00FF0077'
     })
-    */
 
-    drawRaycasting(settings, game)
   }
 }
 

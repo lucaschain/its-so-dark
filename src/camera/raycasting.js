@@ -5,6 +5,7 @@ import { withContext } from './with_context'
 import { type CameraSettings } from './camera_settings'
 import { type Game } from '../game'
 import { type Vertex, distance } from '../common/vertex'
+import { constrain } from '../common/constrain'
 import { type Cell, WALLS } from '../maze/cell'
 import { type Wall, createWall } from '../raycasting/wall'
 import { flashLight } from '../raycasting'
@@ -73,7 +74,9 @@ const draw3dRendered = (settings: CameraSettings, origin: Vertex, points: Vertex
   const sliceWidth = settings.canvas.width / points.length
 
   distances.forEach((distance, index) => {
-    const alpha = 1 / distance
+    const maxDistance = 20
+    const minDistance = 0
+    const alpha = constrain(distance, minDistance, maxDistance)
 
     const height = settings.canvas.height / (distance / 10)
 
@@ -84,7 +87,7 @@ const draw3dRendered = (settings: CameraSettings, origin: Vertex, points: Vertex
       y,
       width: sliceWidth,
       height,
-      color: `rgba(255, 50, 50, ${alpha})`
+      color: `rgba(155, 30, 30, ${alpha})`
     })
   })
 }
@@ -102,11 +105,6 @@ export const drawRaycasting = (
     return
   }
 
-  const walls = chain(
-    (cell) => wallsFromCell(settings, cell),
-    cells
-  )
-
   const cameraSizeCenterTiled = (x, y) => {
     const position = toCameraSize(tileSize, x, y)
     return {
@@ -114,8 +112,13 @@ export const drawRaycasting = (
       y: position.y + tileSize / 2
     }
   }
-
   const sourcePosition = cameraSizeCenterTiled(current.x, current.y)
+
+
+  const walls = chain(
+    partial(wallsFromCell, [settings]),
+    cells
+  )
   const points = flashLight(sourcePosition, angle, walls)
 
   //drawPoints(settings, sourcePosition, points)
