@@ -5,12 +5,16 @@ import { type Wall } from './wall'
 
 export type Ray = {
   position: Vertex,
+  angle: number,
+  target: ?Vertex,
   direction: Vertex
 }
 
 export const createRay = (position: Vertex, angle: number): Ray => {
   return {
     position,
+    target: null,
+    angle: angle,
     direction: {
       x: Math.cos(angle * Math.PI / 180),
       y: Math.sin(angle * Math.PI / 180)
@@ -29,16 +33,18 @@ export const cast = (ray: Ray, walls: Wall[]): Vertex | boolean => {
   return nearestPoint(ray.position, points)
 }
 
-const nearestPoint = (reference: Vertex, points: Vertex[]): Vertex => {
+const nearestPoint = (reference: Vertex, points: Ray[]): Vertex => {
   let nearestPoint = reference
   let nearestDistance = Infinity
 
   points.forEach((point) => {
-    const pointDistance = distance(reference, point)
+    if (point.target) {
+      const pointDistance = distance(reference, point.target)
 
-    if (pointDistance < nearestDistance) {
-      nearestDistance = pointDistance
-      nearestPoint = point
+      if (pointDistance < nearestDistance) {
+        nearestDistance = pointDistance
+        nearestPoint = point
+      }
     }
   })
 
@@ -59,13 +65,13 @@ const rayPoints = (ray: Ray) => ({
   y4: ray.position.y + ray.direction.y
 })
 
-const castToWall = (ray: Ray, wall: Wall): Vertex | boolean => {
+const castToWall = (ray: Ray, wall: Wall): Ray => {
   const { x1, x2, y1, y2 } = wallPoints(wall)
   const { x3, x4, y3, y4 } = rayPoints(ray)
 
   const denominator = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
   if (denominator === 0) {
-    return false
+    return ray
   }
 
   const t = (
@@ -80,11 +86,14 @@ const castToWall = (ray: Ray, wall: Wall): Vertex | boolean => {
 
   if (t > 0 && t < 1 && u > 0) {
     return {
-      x: x1 + t * (x2 - x1),
-      y: y1 + t * (y2 - y1)
+      ...ray,
+      target: {
+        x: x1 + t * (x2 - x1),
+        y: y1 + t * (y2 - y1)
+      }
     }
   }
 
-  return false
+  return ray
 }
 

@@ -29,9 +29,9 @@ export const flashLight = (
   source: Vertex,
   angle: number,
   walls: Wall[],
-  fieldOfView: number = 160,
-  amountOfRays: number = fieldOfView * 2
-): Vertex[] => {
+  fieldOfView: number = 150,
+  amountOfRays: number = fieldOfView
+): Ray[] => {
   const rays = unfold(
     partial(
       createRays,

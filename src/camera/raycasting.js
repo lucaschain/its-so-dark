@@ -8,6 +8,7 @@ import { type Vertex, distance } from '../common/vertex'
 import { constrain } from '../common/constrain'
 import { type Cell, WALLS } from '../maze/cell'
 import { type Wall, createWall } from '../raycasting/wall'
+import { type Ray } from '../raycasting/ray'
 import { flashLight } from '../raycasting'
 
 const toCameraSize = (tileSize: number, x: number, y: number) => ({
@@ -56,40 +57,59 @@ const wallsFromCell = (settings: CameraSettings, cell: Cell): Wall[] => {
   }).filter(Boolean)
 }
 
-const drawPoints = (settings: CameraSettings, origin: Vertex, points: Vertex[]) => {
+const drawPoints = (settings: CameraSettings, origin: Vertex, rays: Ray[]) => {
   withContext(settings, context => {
-    points.forEach((point) => {
-      context.beginPath()
-      context.moveTo(origin.x, origin.y)
-      context.lineTo(point.x, point.y)
-      context.strokeStyle = 'rgba(255, 255, 255, 0.1)'
-      context.lineWidth = 3;
-      context.stroke()
+    rays.forEach((ray) => {
+      const point = ray.target
+      if (point) {
+        context.beginPath()
+        context.moveTo(origin.x, origin.y)
+        context.lineTo(point.x, point.y)
+        context.strokeStyle = 'rgba(0, 100, 255, 1)'
+        context.lineWidth = 3;
+        context.stroke()
+      }
     })
   })
 }
 
-const draw3dRendered = (settings: CameraSettings, origin: Vertex, points: Vertex[]) => {
-  const distances = points.map(partial(distance, [origin]))
-  const sliceWidth = settings.canvas.width / points.length
+let lastState;
+const draw3dRendered = (settings: CameraSettings, origin: Vertex, rays: Ray[], angle: number) => {
+  if (!lastState) {
+    lastState = rays
+  }
 
-  distances.forEach((distance, index) => {
+  const sliceWidth = settings.canvas.width / rays.length
+
+  rays.forEach((ray, index) => {
+    if (!ray.target) {
+      return
+    }
+    const lastRayTarget = (lastState[index].target) ? lastState[index].target : ray.target
+    const rayLength = distance(origin, ray.target)
+
     const maxDistance = 20
     const minDistance = 0
-    const alpha = constrain(distance, minDistance, maxDistance)
+    const lastRayLength = distance(origin, lastRayTarget)
+    const fixedDistance = rayLength + ((lastRayLength - rayLength) / 1.5)
 
-    const height = settings.canvas.height / (distance / 10)
+    const alpha = constrain(fixedDistance, minDistance, maxDistance)
+
+    const heightFixRate = Math.cos((angle - ray.angle) * Math.PI / 180)
+    const height = constrain(fixedDistance * heightFixRate, 0, settings.canvas.height * 10)
 
     const y = (settings.canvas.height - height) / 2
 
     drawRect(settings, {
-      x: index * sliceWidth,
+      x: (index * sliceWidth) - (sliceWidth / 2),
       y,
-      width: sliceWidth,
+      width: sliceWidth * 2,
       height,
       color: `rgba(155, 30, 30, ${alpha})`
     })
   })
+
+  lastState = rays
 }
 
 export const drawRaycasting = (
@@ -119,8 +139,8 @@ export const drawRaycasting = (
     partial(wallsFromCell, [settings]),
     cells
   )
-  const points = flashLight(sourcePosition, angle, walls)
+  const rays = flashLight(sourcePosition, angle, walls)
 
-  //drawPoints(settings, sourcePosition, points)
-  draw3dRendered(settings, sourcePosition, points)
+  draw3dRendered(settings, sourcePosition, rays, angle)
+  drawPoints(settings, sourcePosition, rays)
 }
