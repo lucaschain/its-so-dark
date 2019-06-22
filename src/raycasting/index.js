@@ -27,16 +27,16 @@ const createRays = (
 
 const castRays = (rays: Ray[], walls: Wall[]): Ray[] => {
   return rays
-    .map((ray) => cast(ray, walls))
-    .filter(ray => !!ray.target)
+    .map(ray => cast(ray, walls))
+    .filter(ray => ray.target)
 }
 
 export const flashLight = (
   source: Vertex,
   angle: number,
   walls: Wall[],
-  fieldOfView: number = 150,
-  amountOfRays: number = fieldOfView
+  fieldOfView: number = 140,
+  amountOfRays: number = fieldOfView * 2
 ): Ray[] => {
   const rays = unfold(
     partial(
