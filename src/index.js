@@ -42,11 +42,6 @@ const createInitialState = (): Game => {
       OrderedSet(optimalSteps)
     )
 
-    const events = [{
-      name: 'playerMoved',
-      subscribers: [beep]
-    }]
-
     return {
       grid,
       pathFinding,
