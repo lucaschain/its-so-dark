@@ -33,7 +33,7 @@ const buildToneSynth = (): Tone.Synth => {
   )
 }
 
-export const createSynth = () => {
+export const createSynth = (): Synth => {
   const audioContext: AudioContext = new (window.AudioContext || window.webkitAudioContext)()
   const destination = audioContext.destination
   const synth = buildToneSynth()
