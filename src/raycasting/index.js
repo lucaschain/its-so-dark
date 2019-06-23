@@ -36,7 +36,7 @@ export const flashLight = (
   angle: number,
   walls: Wall[],
   fieldOfView: number = 140,
-  amountOfRays: number = fieldOfView / 3
+  amountOfRays: number = fieldOfView
 ): Ray[] => {
   const rays = unfold(
     partial(

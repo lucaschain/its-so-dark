@@ -62,7 +62,7 @@ const drawCell = (settings: CameraSettings, cell: Cell): void => {
     color: cell.visited ? 'rgba(10, 10, 15, 0.8)' : 'rgba(0, 0, 10, 0.8)'
   })
 
-  drawCellVertices(settings, cell)
+  //drawCellVertices(settings, cell)
 }
 
 export const drawCells = (settings: CameraSettings, cells: Cell[]): void => {
