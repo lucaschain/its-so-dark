@@ -66,19 +66,20 @@ const createInitialState = (): Game => {
   throw 'Could not find optimal steps'
 }
 
+alert("Bem vindo, utilize as setas do teclado para girar e mover, e barra de espaço pra tocar uma nota")
+
 const gameState = createInitialState()
 const camera = createCamera(cameraSettings)
-const withinNeighborsAndNextBest = (hook: Hook<Game>): Hook<Game>[] => [pipe(
+const withinNeighborsAndNextBest = (hook: Hook<Game>): Hook<Game> => pipe(
   calculateNeighbors,
   hook,
-  calculateNextBest,
-  beep
-)]
+  calculateNextBest
+)
 const keyPress = Map<string, Hook<Game>>({
-  ArrowUp: withinNeighborsAndNextBest(move('front')),
-  ArrowDown: withinNeighborsAndNextBest(move('back')),
-  ArrowLeft: withinNeighborsAndNextBest(turn('left')),
-  ArrowRight: withinNeighborsAndNextBest(turn('right')),
+  ArrowUp: [withinNeighborsAndNextBest(move('front')), beep],
+  ArrowDown: [withinNeighborsAndNextBest(move('back')), beep],
+  ArrowLeft: [withinNeighborsAndNextBest(turn('left'))],
+  ArrowRight: [withinNeighborsAndNextBest(turn('right'))],
   ' ': [beep]
 })
 const input = { keyPress }
