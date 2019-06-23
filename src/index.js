@@ -3,7 +3,7 @@ import { OrderedSet, Set, Map } from 'immutable'
 import { partial, pipe, __ } from 'ramda'
 import { type Grid, createGrid } from './maze/grid'
 import { type Cell, walkableNeighbors } from './maze/cell'
-import { type Game, calculateNeighbors, move, turn } from './game'
+import { type Game, calculateNeighbors, beep, move, turn } from './game'
 import { type Camera, createCamera } from './camera'
 import { createCameraSettings } from './camera/camera_settings'
 import { fillMaze } from './maze'
@@ -26,12 +26,14 @@ const cameraSettings = createCameraSettings('canvas', width, height, tileSize)
 const createInitialState = (): Game => {
   const initialGrid = createGrid(width, height)
 
-  const grid = [...fillMaze(initialGrid)].pop()
+  const grid = Array.from(fillMaze(initialGrid)).pop()
 
-  const neighborFinder = partial(walkableNeighbors, [ __, grid ])
+  const neighborFinder = (node) => {
+    return Set(walkableNeighbors(node, grid))
+  }
   const pathSteps = findPath(nodeSetFromGrid(grid), neighborFinder)
 
-  const pathFinding = [...pathSteps].pop()
+  const pathFinding = Array.from(pathSteps).pop()
   const optimalSteps = pathFinding.get('optimalPath')
 
   if (typeof optimalSteps !== 'undefined') {
@@ -40,10 +42,16 @@ const createInitialState = (): Game => {
       OrderedSet(optimalSteps)
     )
 
+    const events = [{
+      name: 'playerMoved',
+      subscribers: [beep]
+    }]
+
     return {
       grid,
       pathFinding,
       synthGrid,
+      synth: createSynth(),
       heading: 0,
       current: { x: 0, y: 0 },
       neighbors: []
@@ -54,7 +62,6 @@ const createInitialState = (): Game => {
 }
 
 const gameState = createInitialState()
-const synth = createSynth()
 const camera = createCamera(cameraSettings)
 const keyPress = Map<string, Hook<Game>>({
   ArrowUp: [move('front')],
@@ -65,5 +72,6 @@ const keyPress = Map<string, Hook<Game>>({
 const input = { keyPress }
 const engine = createEngine<Game>(input, [
   calculateNeighbors,
+  beep,
   camera
 ], gameState).start()

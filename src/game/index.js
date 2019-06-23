@@ -13,5 +13,6 @@ export type Game = {
 }
 
 export { turn } from './turn'
+export { beep } from './beep'
 export { move } from './move'
 export { calculateNeighbors } from './calculate_neighbors'
