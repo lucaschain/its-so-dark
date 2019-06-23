@@ -11,3 +11,7 @@ export const distance = (pointA: Vertex, pointB: Vertex) => {
   return Math.sqrt(a * a + b * b);
 }
 
+export const fromAngle = (angle: number) => ({
+  y: Math.sin(angle * Math.PI / 180),
+  x: Math.cos(angle * Math.PI / 180)
+})

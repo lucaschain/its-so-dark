@@ -3,7 +3,7 @@ import { OrderedSet, Set, Map } from 'immutable'
 import { partial, pipe, __ } from 'ramda'
 import { type Grid, createGrid } from './maze/grid'
 import { type Cell, walkableNeighbors } from './maze/cell'
-import { type Game, calculateNeighbors, beep, move, turn } from './game'
+import { type Game, lerpPannerListener, calculateNextBest, calculateNeighbors, beep, move, turn } from './game'
 import { type Camera, createCamera } from './camera'
 import { createCameraSettings } from './camera/camera_settings'
 import { fillMaze } from './maze'
@@ -49,6 +49,7 @@ const createInitialState = (): Game => {
       synth: createSynth(),
       heading: 0,
       current: { x: 0, y: 0 },
+      nextNearest: { x: 0, y: 0 },
       neighbors: []
     }
   }
@@ -58,15 +59,21 @@ const createInitialState = (): Game => {
 
 const gameState = createInitialState()
 const camera = createCamera(cameraSettings)
+const withinNeighborsAndNextBest = (hook: Hook<Game>): Hook<Game>[] => [pipe(
+  calculateNeighbors,
+  hook,
+  calculateNextBest,
+  beep
+)]
 const keyPress = Map<string, Hook<Game>>({
-  ArrowUp: [move('front')],
-  ArrowDown: [move('back')],
-  ArrowLeft: [turn('left')],
-  ArrowRight: [turn('right')]
+  ArrowUp: withinNeighborsAndNextBest(move('front')),
+  ArrowDown: withinNeighborsAndNextBest(move('back')),
+  ArrowLeft: withinNeighborsAndNextBest(turn('left')),
+  ArrowRight: withinNeighborsAndNextBest(turn('right')),
+  ' ': [beep]
 })
 const input = { keyPress }
 const engine = createEngine<Game>(input, [
-  calculateNeighbors,
-  beep,
+  lerpPannerListener,
   camera
 ], gameState).start()

@@ -5,7 +5,9 @@ import { Map } from 'immutable'
 import Tone from 'tone'
 
 export type Synth = {
-  beep: (number) => void
+  beep: (number) => void,
+  listener: Tone.Listener,
+  panner: Tone.Panner3D
 }
 
 const beep = (
@@ -16,7 +18,7 @@ const beep = (
   synth.triggerAttackRelease(frequency, '16n')
 }
 
-const buildToneSynth = (): Tone.Synth => {
+const buildToneSynth = (output): Tone.Synth => {
   const distortion = new Tone.Distortion(0.3)
   const tremolo = new Tone.Tremolo().start()
   const autoWah = new Tone.AutoWah(220, 6, 0)
@@ -29,16 +31,19 @@ const buildToneSynth = (): Tone.Synth => {
     //autoWah,
     lowPass,
     comp,
-    Tone.Master
+    output
   )
 }
 
 export const createSynth = (): Synth => {
   const audioContext: AudioContext = new (window.AudioContext || window.webkitAudioContext)()
   const destination = audioContext.destination
-  const synth = buildToneSynth()
+  const panner = new Tone.Panner3D(0, 0, 0).connect(Tone.Master)
+  const synth = buildToneSynth(panner)
 
   return {
-    beep: partial(beep, [audioContext, synth])
+    beep: partial(beep, [audioContext, synth]),
+    listener: Tone.Listener,
+    panner
   }
 }

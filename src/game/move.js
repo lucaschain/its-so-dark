@@ -1,5 +1,6 @@
 // @flow
 import { type Game } from './index'
+import { fromAngle } from '../common/vertex'
 
 const isAllowedToMove = (newPosition, neighbors): boolean => (
   !!neighbors.find((neighbor) => (
@@ -8,15 +9,13 @@ const isAllowedToMove = (newPosition, neighbors): boolean => (
 )
 
 export const move = (direction: string) => (game: Game): Game => {
-  const { grid, current, heading, neighbors } = game
+  const { grid, current, heading, neighbors, synth } = game
 
-  const sin = (angle) => Math.round(Math.sin(angle * Math.PI / 180))
-  const cos = (angle) => Math.round(Math.cos(angle * Math.PI / 180))
   const distance = direction === 'front' ? 1 : -1
-
+  const movementVector = fromAngle(heading)
   const movement = {
-    x: cos(heading) * distance,
-    y: sin(heading) * distance
+    x: Math.round(movementVector.x) * distance,
+    y: Math.round(movementVector.y) * distance
   }
 
   const newPosition = {
@@ -31,6 +30,7 @@ export const move = (direction: string) => (game: Game): Game => {
 
   return {
     ...game,
+    synth,
     current: moveAllowed ? newPosition : current
   }
 }
