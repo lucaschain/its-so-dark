@@ -3,7 +3,16 @@ import { OrderedSet, Set, Map } from 'immutable'
 import { partial, pipe, __ } from 'ramda'
 import { type Grid, createGrid } from './maze/grid'
 import { type Cell, walkableNeighbors } from './maze/cell'
-import { type Game, lerpPannerListener, calculateNextBest, calculateNeighbors, beep, move, turn } from './game'
+import { 
+  type Game,
+  checkEnd,
+  lerpPannerListener,
+  calculateNextBest,
+  calculateNeighbors,
+  beep,
+  move,
+  turn
+} from './game'
 import { type Camera, createCamera } from './camera'
 import { createCameraSettings } from './camera/camera_settings'
 import { fillMaze } from './maze'
@@ -75,5 +84,6 @@ const keyPress = Map<string, Hook<Game>>({
 const input = { keyPress }
 const engine = createEngine<Game>(input, [
   lerpPannerListener,
+  checkEnd,
   camera
 ], gameState).start()

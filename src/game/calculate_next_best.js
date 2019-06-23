@@ -6,7 +6,7 @@ export const calculateNextBest = (game: Game): Game => {
   const { grid, current, pathFinding } = game
 
   let nextNearest
-  if (pathFinding && pathFinding.get('optimalPath') && pathFinding.get('current')) {
+  if (pathFinding) {
     const optimalPath = maybe(pathFinding.get('optimalPath'))
 
     nextNearest = optimalPath.find((step, index, fullPath) => {

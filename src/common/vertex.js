@@ -4,6 +4,10 @@ export type Vertex = {
   y: number
 }
 
+export const isEquals = (a: Vertex, b: Vertex) => (
+  a.x === b.x && a.y === b.y
+)
+
 export const distance = (pointA: Vertex, pointB: Vertex) => {
   const a = pointA.x - pointB.x
   const b = pointA.y - pointB.y

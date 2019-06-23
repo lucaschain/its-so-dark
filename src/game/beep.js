@@ -1,4 +1,6 @@
+// @flow
 import { vertexNote } from '../synth/grid'
+import { type Game } from './index'
 
 let lastBeep = Date.now()
 export const beep = (game: Game): Game => {
