@@ -30,7 +30,7 @@ const drawCellVertex = (
       toTile(cell.y + nextVertex.y)
     )
 
-    context.strokeStyle = 'rgba(170, 0, 0, 0.5)'
+    context.strokeStyle = 'rgba(170, 0, 0, 0.1)'
     context.lineWidth = 10;
     if (cell.walls[index]) {
       context.stroke()

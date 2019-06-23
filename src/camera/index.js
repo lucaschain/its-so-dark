@@ -16,7 +16,7 @@ const clearScreen = (settings: CameraSettings): void => {
 }
 
 const draw = (settings: CameraSettings, game: Game): Game => {
-  const { grid: { cells }, pathFinding, synthGrid, current } = game
+  const { grid: { cells }, pathFinding, synthGrid, current, nextNearest } = game
 
   clearScreen(settings)
 
@@ -25,20 +25,25 @@ const draw = (settings: CameraSettings, game: Game): Game => {
   drawCells(settings, cells)
 
   if (pathFinding) {
-    drawPathFinding(settings, game, pathFinding)
+    //drawPathFinding(settings, game, pathFinding)
   }
 
-  if (current) {
-    const tileSize = settings.tileSize
+  const tileSize = settings.tileSize
+  drawCircle(settings, {
+    x: current.x * tileSize + (tileSize / 2),
+    y: current.y * tileSize + (tileSize / 2),
+    radius: tileSize / 3,
+    color: '#00FF0077'
+  })
 
-    drawCircle(settings, {
-      x: current.x * tileSize + (tileSize / 2),
-      y: current.y * tileSize + (tileSize / 2),
-      radius: tileSize / 3,
-      color: '#00FF0077'
-    })
-
-  }
+  /*
+  drawCircle(settings, {
+    x: nextNearest.x * tileSize + (tileSize / 2),
+    y: nextNearest.y * tileSize + (tileSize / 2),
+    radius: tileSize / 3,
+    color: '#FFFF0077'
+  })
+  */
 
   return game
 }
