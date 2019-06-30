@@ -19,3 +19,7 @@ export const fromAngle = (angle: number) => ({
   y: Math.sin(angle * Math.PI / 180),
   x: Math.cos(angle * Math.PI / 180)
 })
+
+export const toAngle = (vertex: Vertex) => (
+  Math.atan2(vertex.y, vertex.x) * (180 / Math.PI)
+)
