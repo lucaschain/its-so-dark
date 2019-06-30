@@ -16,7 +16,7 @@ const clearScreen = (settings: CameraSettings): void => {
 }
 
 const draw = (settings: CameraSettings, game: Game): Game => {
-  const { grid: { cells }, pathFinding, synthGrid, current, nextNearest } = game
+  const { grid: { cells }, pathFinding, synth, synthGrid, nextNearest } = game
 
   clearScreen(settings)
 
@@ -25,21 +25,30 @@ const draw = (settings: CameraSettings, game: Game): Game => {
   drawCells(settings, cells)
 
   if (pathFinding) {
-    //drawPathFinding(settings, game, pathFinding)
+    drawPathFinding(settings, game, pathFinding)
   }
 
   const tileSize = settings.tileSize
+  const listenerPosition = {
+    x: synth.listener.positionX,
+    y: synth.listener.positionZ
+  }
   drawCircle(settings, {
-    x: current.x * tileSize + (tileSize / 2),
-    y: current.y * tileSize + (tileSize / 2),
+    x: listenerPosition.x * tileSize + (tileSize / 2),
+    y: listenerPosition.y * tileSize + (tileSize / 2),
     radius: tileSize / 3,
     color: '#00FF0077'
   })
 
   /*
+   * do not draw panner to make it harder
+  const pannerPosition = {
+    x: synth.panner.positionX,
+    y: synth.panner.positionZ
+  }
   drawCircle(settings, {
-    x: nextNearest.x * tileSize + (tileSize / 2),
-    y: nextNearest.y * tileSize + (tileSize / 2),
+    x: pannerPosition.x * tileSize + (tileSize / 2),
+    y: pannerPosition.y * tileSize + (tileSize / 2),
     radius: tileSize / 3,
     color: '#FFFF0077'
   })

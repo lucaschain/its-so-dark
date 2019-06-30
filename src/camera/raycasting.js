@@ -4,7 +4,7 @@ import { drawRect } from './rectangle'
 import { withContext } from './with_context'
 import { type CameraSettings } from './camera_settings'
 import { type Game } from '../game'
-import { type Vertex, distance } from '../common/vertex'
+import { type Vertex, toAngle, distance } from '../common/vertex'
 import { constrain } from '../common/constrain'
 import { type Cell, WALLS } from '../maze/cell'
 import { type Wall, createWall } from '../raycasting/wall'
@@ -89,8 +89,8 @@ const draw3dRendered = (settings: CameraSettings, origin: Vertex, rays: Ray[], a
     const lastRayTarget = (lastRay.target) ? lastRay.target : ray.target
     const rayLength = distance(origin, ray.target)
 
-    const maxDistance = 20
-    const minDistance = 0
+    const maxDistance = 5
+    const minDistance = 3
     const lastRayLength = distance(origin, lastRayTarget)
     const fixedDistance = rayLength + ((lastRayLength - rayLength) / 5)
 
@@ -117,10 +117,13 @@ export const drawRaycasting = (
   settings: CameraSettings,
   game: Game,
 ): void => {
-  const { grid: { cells }, current, heading } = game
+  const { grid: { cells }, synth, current, heading } = game
   const { tileSize } = settings
 
-  const angle = heading
+  const angle = toAngle({
+    x: synth.listener.forwardX,
+    y: synth.listener.forwardZ
+  })
 
   if (typeof angle === 'undefined') {
     return
@@ -133,7 +136,11 @@ export const drawRaycasting = (
       y: position.y + tileSize / 2
     }
   }
-  const sourcePosition = cameraSizeCenterTiled(current.x, current.y)
+  const listenerPosition = {
+    x: synth.listener.positionX,
+    y: synth.listener.positionZ
+  }
+  const sourcePosition = cameraSizeCenterTiled(listenerPosition.x, listenerPosition.y)
 
 
   const walls = chain(
