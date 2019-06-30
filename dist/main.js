@@ -5074,7 +5074,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"beep\", function() { return beep; });\n/* harmony import */ var _synth_grid__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../synth/grid */ \"./src/synth/grid.js\");\n\nlet lastBeep = Date.now();\nconst beep = game => {\n  const synth = game.synth,\n        synthGrid = game.synthGrid,\n        current = game.current,\n        nextNearest = game.nextNearest;\n\n  if (Date.now() - lastBeep > 200) {\n    const note = Object(_synth_grid__WEBPACK_IMPORTED_MODULE_0__[\"vertexNote\"])(synthGrid, current);\n    synth.beep(note.frequency);\n    lastBeep = Date.now();\n  }\n\n  return game;\n};\n\n//# sourceURL=webpack:///./src/game/beep.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"beep\", function() { return beep; });\n/* harmony import */ var _synth_grid__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../synth/grid */ \"./src/synth/grid.js\");\n\nlet lastBeep = Date.now();\nconst beep = game => {\n  const synth = game.synth,\n        synthGrid = game.synthGrid,\n        current = game.current,\n        nextNearest = game.nextNearest;\n\n  if (Date.now() - lastBeep > 50) {\n    const note = Object(_synth_grid__WEBPACK_IMPORTED_MODULE_0__[\"vertexNote\"])(synthGrid, current);\n    synth.beep(note.frequency);\n    lastBeep = Date.now();\n  }\n\n  return game;\n};\n\n//# sourceURL=webpack:///./src/game/beep.js?");
 
 /***/ }),
 
