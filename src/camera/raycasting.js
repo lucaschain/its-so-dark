@@ -65,7 +65,7 @@ const drawPoints = (settings: CameraSettings, origin: Vertex, rays: Ray[]) => {
         context.beginPath()
         context.moveTo(origin.x, origin.y)
         context.lineTo(point.x, point.y)
-        context.strokeStyle = 'rgba(0, 100, 255, 1)'
+        context.strokeStyle = 'rgba(255, 255, 255, 1)'
         context.lineWidth = 3;
         context.stroke()
       }

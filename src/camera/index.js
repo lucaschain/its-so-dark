@@ -25,7 +25,7 @@ const draw = (settings: CameraSettings, game: Game): Game => {
   drawCells(settings, cells)
 
   if (pathFinding) {
-    drawPathFinding(settings, game, pathFinding)
+    //drawPathFinding(settings, game, pathFinding)
   }
 
   const tileSize = settings.tileSize
