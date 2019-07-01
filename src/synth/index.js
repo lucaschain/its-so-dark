@@ -39,6 +39,7 @@ export const createSynth = (): Synth => {
   const audioContext: AudioContext = new (window.AudioContext || window.webkitAudioContext)()
   const destination = audioContext.destination
   const panner = new Tone.Panner3D(0, 0, 0).connect(Tone.Master)
+  panner.refDistance = 0.5
   const synth = buildToneSynth(panner)
 
   return {
