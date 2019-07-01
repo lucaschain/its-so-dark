@@ -150,5 +150,5 @@ export const drawRaycasting = (
   const rays = flashLight(sourcePosition, angle, walls)
 
   draw3dRendered(settings, sourcePosition, rays, angle)
-  drawPoints(settings, sourcePosition, rays)
+  //drawPoints(settings, sourcePosition, rays)
 }

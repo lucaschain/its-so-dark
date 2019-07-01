@@ -7,6 +7,8 @@ import { drawRaycasting } from './raycasting'
 import { type CameraSettings, createCameraSettings } from './camera_settings'
 import { drawCircle } from './circle'
 
+const DRAW_MINIMAP = false
+
 export type Camera = Game => Game
 
 const clearScreen = (settings: CameraSettings): void => {
@@ -22,10 +24,14 @@ const draw = (settings: CameraSettings, game: Game): Game => {
 
   drawRaycasting(settings, game)
 
+  if (!DRAW_MINIMAP) {
+    return game
+  }
+
   drawCells(settings, cells)
 
   if (pathFinding) {
-    //drawPathFinding(settings, game, pathFinding)
+    drawPathFinding(settings, game, pathFinding)
   }
 
   const tileSize = settings.tileSize
@@ -40,8 +46,6 @@ const draw = (settings: CameraSettings, game: Game): Game => {
     color: '#00FF0077'
   })
 
-  /*
-   * do not draw panner to make it harder
   const pannerPosition = {
     x: synth.panner.positionX,
     y: synth.panner.positionZ
@@ -52,7 +56,6 @@ const draw = (settings: CameraSettings, game: Game): Game => {
     radius: tileSize / 3,
     color: '#FFFF0077'
   })
-  */
 
   return game
 }
