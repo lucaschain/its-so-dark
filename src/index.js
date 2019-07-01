@@ -79,14 +79,23 @@ const withinNeighborsAndNextBest = (hook: Hook<Game>): Hook<Game> => pipe(
 const normalBeep = partial(beep, [false])
 const forcedBeep = partial(beep, [true])
 
-const keyPress = Map<string, Hook<Game>>({
+const keyPress = Map<string, Hook<Game>[]>({
   ArrowUp: [withinNeighborsAndNextBest(move('front')), normalBeep],
   ArrowDown: [withinNeighborsAndNextBest(move('back')), normalBeep],
   ArrowLeft: [withinNeighborsAndNextBest(turn('left'))],
   ArrowRight: [withinNeighborsAndNextBest(turn('right'))],
   ' ': [forcedBeep]
 })
-const input = { keyPress }
+const swipe = Map<string, Hook<Game>[]>({
+  down: [withinNeighborsAndNextBest(move('front')), normalBeep],
+  up: [withinNeighborsAndNextBest(move('back')), normalBeep],
+  left: [withinNeighborsAndNextBest(turn('right'))],
+  right: [withinNeighborsAndNextBest(turn('left'))],
+})
+const tap = Map<string, Hook<Game>[]>({
+  double: [forcedBeep]
+})
+const input = { keyPress, swipe, tap }
 const engine = createEngine<Game>(input, [
   lerpPannerListener,
   checkEnd,
