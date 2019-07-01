@@ -34,7 +34,7 @@ export const createEngine = <T>(
       hammer = new Hammer(document.body)
     }
     if (hammer && input.swipe) {
-      hammer.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
+      hammer.get('swipe').set({ velocity: 0.1, direction: Hammer.DIRECTION_ALL });
       const directions = {
         right: Hammer.DIRECTION_RIGHT,
         up: Hammer.DIRECTION_UP,
