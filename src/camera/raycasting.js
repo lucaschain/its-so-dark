@@ -147,7 +147,9 @@ export const drawRaycasting = (
     partial(wallsFromCell, [settings]),
     cells
   )
-  const rays = flashLight(sourcePosition, angle, walls)
+  const fieldOfView = 140
+  const amountOfRays = Math.min(fieldOfView, (window.innerWidth || 300) / 6)
+  const rays = flashLight(sourcePosition, angle, walls, fieldOfView, amountOfRays)
 
   draw3dRendered(settings, sourcePosition, rays, angle)
   //drawPoints(settings, sourcePosition, rays)
