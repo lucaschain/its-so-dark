@@ -67,7 +67,7 @@ const createInitialState = (): Game => {
   throw 'Could not find optimal steps'
 }
 
-alert("Bem vindo, utilize as setas do teclado para girar e mover, e barra de espaço pra tocar uma nota. Feche os olhos e tente sair")
+alert("Utilize as setas do teclado para girar e mover, e barra de espaço pra tocar uma nota. No celular, arraste a tela. Feche os olhos e tente sair")
 
 const gameState = createInitialState()
 const camera = createCamera(cameraSettings)
