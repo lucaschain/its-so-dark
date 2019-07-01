@@ -24,6 +24,8 @@ import { createSynthGrid } from './synth/grid'
 import { type Synth } from './synth'
 import { type Hook } from './engine/hook'
 import { createEngine } from './engine'
+import { context } from 'tone'
+import StartAudioContext from 'startaudiocontext'
 
 const tileSize = 25
 const size = 10 // keep this a square
@@ -67,37 +69,41 @@ const createInitialState = (): Game => {
   throw 'Could not find optimal steps'
 }
 
-alert("Utilize as setas do teclado para girar e mover, e barra de espaço pra tocar uma nota. No celular, arraste a tela. Feche os olhos e tente sair")
+const startGame = () => {
+  const gameState = createInitialState()
+  const camera = createCamera(cameraSettings)
+  const withinNeighborsAndNextBest = (hook: Hook<Game>): Hook<Game> => pipe(
+    calculateNeighbors,
+    hook,
+    calculateNextBest
+  )
+  const normalBeep = partial(beep, [false])
+  const forcedBeep = partial(beep, [true])
 
-const gameState = createInitialState()
-const camera = createCamera(cameraSettings)
-const withinNeighborsAndNextBest = (hook: Hook<Game>): Hook<Game> => pipe(
-  calculateNeighbors,
-  hook,
-  calculateNextBest
-)
-const normalBeep = partial(beep, [false])
-const forcedBeep = partial(beep, [true])
+  const keyPress = Map<string, Hook<Game>[]>({
+    ArrowUp: [withinNeighborsAndNextBest(move('front')), normalBeep],
+    ArrowDown: [withinNeighborsAndNextBest(move('back')), normalBeep],
+    ArrowLeft: [withinNeighborsAndNextBest(turn('left'))],
+    ArrowRight: [withinNeighborsAndNextBest(turn('right'))],
+    ' ': [forcedBeep]
+  })
+  const swipe = Map<string, Hook<Game>[]>({
+    down: [withinNeighborsAndNextBest(move('front')), normalBeep],
+    up: [withinNeighborsAndNextBest(move('back')), normalBeep],
+    left: [withinNeighborsAndNextBest(turn('right'))],
+    right: [withinNeighborsAndNextBest(turn('left'))],
+  })
+  const tap = Map<string, Hook<Game>[]>({
+    double: [forcedBeep]
+  })
+  const input = { keyPress, swipe, tap }
+  const engine = createEngine<Game>(input, [
+    lerpPannerListener,
+    checkEnd,
+    camera
+  ], gameState).start()
+}
 
-const keyPress = Map<string, Hook<Game>[]>({
-  ArrowUp: [withinNeighborsAndNextBest(move('front')), normalBeep],
-  ArrowDown: [withinNeighborsAndNextBest(move('back')), normalBeep],
-  ArrowLeft: [withinNeighborsAndNextBest(turn('left'))],
-  ArrowRight: [withinNeighborsAndNextBest(turn('right'))],
-  ' ': [forcedBeep]
-})
-const swipe = Map<string, Hook<Game>[]>({
-  down: [withinNeighborsAndNextBest(move('front')), normalBeep],
-  up: [withinNeighborsAndNextBest(move('back')), normalBeep],
-  left: [withinNeighborsAndNextBest(turn('right'))],
-  right: [withinNeighborsAndNextBest(turn('left'))],
-})
-const tap = Map<string, Hook<Game>[]>({
-  double: [forcedBeep]
-})
-const input = { keyPress, swipe, tap }
-const engine = createEngine<Game>(input, [
-  lerpPannerListener,
-  checkEnd,
-  camera
-], gameState).start()
+alert("Utilize as setas do teclado para girar e mover. No celular, arraste a tela.\nFeche os olhos e tente sair. Toque na tela para iniciar")
+
+StartAudioContext(context, '#canvas').then(startGame)
