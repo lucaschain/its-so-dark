@@ -21,6 +21,7 @@
     "hammerjs": "^2.0.8",
     "immutable": "^4.0.0-rc.12",
     "ramda": "^0.26.1",
+    "startaudiocontext": "^1.2.1",
     "tone": "^13.4.9"
   }
 }
