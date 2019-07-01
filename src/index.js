@@ -104,6 +104,11 @@ const startGame = () => {
   ], gameState).start()
 }
 
-alert("Utilize as setas do teclado para girar e mover. No celular, arraste a tela.\nFeche os olhos e tente sair. Toque na tela para iniciar")
+alert(
+  "Utilize as setas do teclado para se movimentar;\n" +
+  "No celular, arraste a tela;\n" + 
+  "Feche os olhos e tente sair;\n" + 
+  "Toque na tela para iniciar."
+)
 
 StartAudioContext(context, '#canvas').then(startGame)
