@@ -56,6 +56,7 @@ const createInitialState = (): Game => {
       pathFinding,
       synthGrid,
       synth: createSynth(),
+      hasMoved: false,
       heading: 0,
       current: { x: 0, y: 0 },
       nextNearest: { x: 0, y: 0 },
@@ -75,12 +76,15 @@ const withinNeighborsAndNextBest = (hook: Hook<Game>): Hook<Game> => pipe(
   hook,
   calculateNextBest
 )
+const normalBeep = partial(beep, [false])
+const forcedBeep = partial(beep, [true])
+
 const keyPress = Map<string, Hook<Game>>({
-  ArrowUp: [withinNeighborsAndNextBest(move('front')), beep],
-  ArrowDown: [withinNeighborsAndNextBest(move('back')), beep],
+  ArrowUp: [withinNeighborsAndNextBest(move('front')), normalBeep],
+  ArrowDown: [withinNeighborsAndNextBest(move('back')), normalBeep],
   ArrowLeft: [withinNeighborsAndNextBest(turn('left'))],
   ArrowRight: [withinNeighborsAndNextBest(turn('right'))],
-  ' ': [beep]
+  ' ': [forcedBeep]
 })
 const input = { keyPress }
 const engine = createEngine<Game>(input, [

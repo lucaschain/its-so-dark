@@ -31,6 +31,7 @@ export const move = (direction: string) => (game: Game): Game => {
   return {
     ...game,
     synth,
+    hasMoved: moveAllowed,
     current: moveAllowed ? newPosition : current
   }
 }

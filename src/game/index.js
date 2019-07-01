@@ -12,6 +12,7 @@ export type Game = {
   neighbors: Cell[],
   nextNearest: Vertex,
   synth: Synth,
+  hasMoved: boolean,
   synthGrid: any
 }
 
