@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack",
+    "test": "flow-remove-types -a --out-dir noflow src/ && mocha --recursive --require @babel/register ./test",
     "prepublish": "yarn run build"
   },
   "devDependencies": {
@@ -13,7 +14,11 @@
     "@babel/polyfill": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
     "@babel/preset-flow": "^7.0.0",
+    "@babel/register": "^7.5.5",
     "babel-loader": "^8.0.5",
+    "chai": "^4.2.0",
+    "flow-remove-types": "^2.106.2",
+    "mocha": "^6.2.0",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.0"
   },

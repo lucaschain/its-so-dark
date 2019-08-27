@@ -19,7 +19,7 @@ const presets = [
 module.exports = {
   entry: './src/index.js',
   mode: 'development',
-  watch: true,
+  watch: false,
   watchOptions: {
     ignored: ['dist', 'node_modules']
   },

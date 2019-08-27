@@ -5056,11 +5056,10 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 /*!******************************!*\
   !*** ./src/common/random.js ***!
   \******************************/
-/*! exports provided: range */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports) {
 
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"range\", function() { return range; });\nconst range = (from, to) => from + Math.random() * (to - from);\n\n//# sourceURL=webpack:///./src/common/random.js?");
+eval("module.exports.range = (from, to) => from + Math.random() * (to - from);\n\n//# sourceURL=webpack:///./src/common/random.js?");
 
 /***/ }),
 
@@ -5348,7 +5347,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"Note\", function() { return Note; });\n/* harmony import */ var _common_random__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../common/random */ \"./src/common/random.js\");\n\n\nconst transpose = (frequency, semitones) => frequency * Math.pow(Math.pow(2, 1 / 12), semitones);\n\nclass Note {\n  constructor(frequency) {\n    this.frequency = frequency || Object(_common_random__WEBPACK_IMPORTED_MODULE_0__[\"range\"])(200, 1000);\n  }\n\n  transpose(semitones) {\n    return new Note(transpose(this.frequency, semitones));\n  }\n\n}\n\n//# sourceURL=webpack:///./src/synth/note.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"Note\", function() { return Note; });\n/* harmony import */ var _common_random__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../common/random */ \"./src/common/random.js\");\n/* harmony import */ var _common_random__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_common_random__WEBPACK_IMPORTED_MODULE_0__);\n\n\nconst transpose = (frequency, semitones) => frequency * Math.pow(Math.pow(2, 1 / 12), semitones);\n\nclass Note {\n  constructor(frequency) {\n    this.frequency = frequency || Object(_common_random__WEBPACK_IMPORTED_MODULE_0__[\"range\"])(200, 1000);\n  }\n\n  transpose(semitones) {\n    return new Note(transpose(this.frequency, semitones));\n  }\n\n}\n\n//# sourceURL=webpack:///./src/synth/note.js?");
 
 /***/ })
 

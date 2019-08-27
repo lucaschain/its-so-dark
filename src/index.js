@@ -3,7 +3,7 @@ import { OrderedSet, Set, Map } from 'immutable'
 import { partial, pipe, __ } from 'ramda'
 import { type Grid, createGrid } from './maze/grid'
 import { type Cell, walkableNeighbors } from './maze/cell'
-import { 
+import {
   type Game,
   checkEnd,
   lerpPannerListener,
