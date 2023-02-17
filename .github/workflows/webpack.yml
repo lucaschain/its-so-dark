@@ -24,6 +24,11 @@ jobs:
       run: |
         yarn install
         yarn build
+    
+    - uses: actions/upload-artifact@v2
+      with:
+        name: github-pages
+        path: dist
 
   deploy:
     needs: build
