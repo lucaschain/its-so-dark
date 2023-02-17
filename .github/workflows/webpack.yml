@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x]
+        node-version: [16.x]
 
     steps:
     - uses: actions/checkout@v3
@@ -26,3 +26,11 @@ jobs:
       run: |
         yarn install
         yarn build
+
+    - name: GitHub Pages
+      # You may pin to the exact commit or the version.
+      # uses: crazy-max/ghaction-github-pages@c0d7ff0487ee0415efb7f32dab10ea880330b1dd
+      uses: crazy-max/ghaction-github-pages@v3.1.0
+      with:
+        build_dir: ./dist
+        verbose: true
